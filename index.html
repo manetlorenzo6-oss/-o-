@@ -270,7 +270,7 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
         <input type="number" class="input-field" id="goal-weight" placeholder="67" min="30" max="300">
       </div>
       <div class="input-group" style="grid-column:1/-1">
-        <button class="btn-calc" onclick="calculateBMI()">CALCULER MON PROGRAMME PERSONNALISÉ</button>
+        <button class="btn-calc" onclick="calculateBMI(true)">CALCULER MON PROGRAMME PERSONNALISÉ</button>
       </div>
     </div>
     <div class="bmi-result" id="bmi-result">
@@ -475,7 +475,7 @@ const programme = [
     { nom: 'LUNDI', type: 'hiit', exercices: ['HIIT 20 min : burpees, squats sauts, mountain climbers', 'Récupération 10 min'] },
     { nom: 'MARDI', type: 'muscu', exercices: ['Squat barre 4×10', 'Bench press 4×10', 'Tractions assistées 3×8', 'Développé épaules 3×12'] },
     { nom: 'MERCREDI', type: 'cardio', exercices: ['Jogging continu 40 min', 'Fréquence cible 130-150 bpm'] },
-    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération — mobilité 20 min', 'Bain froid ou contraste douche'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération — mobility 20 min', 'Bain froid ou contraste douche'] },
     { nom: 'VENDREDI', type: 'muscu', exercices: ['Deadlift 4×8', 'Squat goblet 3×15', 'Rowing 4×10', 'Gainage complexe 4×45s'] },
     { nom: 'SAMEDI', type: 'cardio', exercices: ['Sortie longue : marche-course 55 min', 'Bilan 1er mois'] },
     { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS TOTAL', 'Pesée · Photos · Mesures corporelles'] },
@@ -511,60 +511,100 @@ const programme = [
   { sem: 8, phase: 2, label: 'Phase 2 — Intensification', jours: [
     { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 5×5 (Nouveau Record)', 'Incliné barre 4×8', 'Soulevé de terre 4×5', 'Shoulder press 4×8'] },
     { nom: 'MARDI', type: 'hiit', exercices: ['HIIT Pyramide 25 min : 15s-30s-45s-30s-15s effort', 'Corde à sauter, burpees, mountain climbers'] },
-    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course continue 60 min', 'Objectif endurance fondamentale'] },
-    { nom: 'JEUDI', type: 'rest', exercices: ['Repos total', 'Hydratation accrue', 'Massage au rouleau (foam roller) 15 min'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course continue 60 min', 'Endurance fondamentale'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Repos total', 'Hydratation accrue', 'Foam roller 15 min'] },
     { nom: 'VENDREDI', type: 'muscu', exercices: ['Fentes bulgares 4×10/jambe', 'Tractions pronation 4×max', 'Dips 4×12', 'Gainage bûcheron 3×12'] },
     { nom: 'SAMEDI', type: 'cardio', exercices: ['Natation 50 min intensive ou cyclisme 90 min'] },
     { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Bilan Fin de Phase 2'] },
   ]},
-  // Phase 3 : Optimisation et Maintien (sem 9-12)
+  // Phase 3 : Optimisation (sem 9-12)
   { sem: 9, phase: 3, label: 'Phase 3 — Optimisation', jours: [
     { nom: 'LUNDI', type: 'muscu', exercices: ['Supersets Squat/Fentes (4×10)', 'Supersets Bench/Rowing (4×10)', 'Gainage militaire 3×1min'] },
-    { nom: 'MARDI', type: 'hiit', exercices: ['AMRAP 20 min : un maximum de tours possibles', '15 Squats sautés, 10 Pompes, 15 Sit-ups, 30 Jumping Jacks'] },
-    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course fractionnée : 10× (1min rapide / 1min lent)', 'Échauffement et retour au calme 10 min'] },
+    { nom: 'MARDI', type: 'hiit', exercices: ['AMRAP 20 min : max de tours', '15 Squats sautés, 10 Pompes, 15 Sit-ups, 30 Jumping Jacks'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Fractionné : 10× (1min rapide / 1min lent)', 'Échauffement & retour au calme 10 min'] },
     { nom: 'JEUDI', type: 'rest', exercices: ['Récupération active', 'Marche en forêt 40 min', 'Stretching bas du corps'] },
-    { nom: 'VENDREDI', type: 'muscu', exercices: ['Soulevé de terre 4×6 lourd', 'Press militaire 4×8', 'Tirage poulie haute 4×10', 'Oiseaux haltères 3×15'] },
-    { nom: 'SAMEDI', type: 'hiit', exercices: ['Circuit Brûle-Graisse : 45s effort / 15s repos (4 tours)', 'Burpees, Thrusters haltères, Mountain climbers, Kicks'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Pesée et ajustements macro'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Soulevé de terre 4×6 lourd', 'Press militaire 4×8', 'Tirage poulie 4×10', 'Oiseux haltères 3×15'] },
+    { nom: 'SAMEDI', type: 'hiit', exercices: ['Circuit Brûle-Graisse : 45s effort / 15s repos (4 tours)', 'Burpees, Thrusters haltères, Mountain climbers'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Pesée et ajustements'] },
   ]},
   { sem: 10, phase: 3, label: 'Phase 3 — Optimisation', jours: [
     { nom: 'LUNDI', type: 'muscu', exercices: ['Squat lourd 4×6', 'Presse à cuisses 3×12', 'Leg curl 3×15', 'Mollets debout 4×20'] },
-    { nom: 'MARDI', type: 'cardio', exercices: ['Course à pied stable 50 min', 'Maintenir une fréquence de brûlage des graisses optimale'] },
-    { nom: 'MERCREDI', type: 'hiit', exercices: ['Tabata hardcore : 2 blocs complets de 8 min', 'Burpees et Thrusters au poids du corps'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course stable 50 min', 'Zone de brûlage optimale des graisses'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['Tabata : 2 blocs complets de 8 min', 'Burpees et Thrusters au poids de corps'] },
     { nom: 'JEUDI', type: 'muscu', exercices: ['Développé couché haltères 4×8', 'Rowing barre T 4×8', 'Élévations latérales 3×12', 'Gainage planche 4×1min'] },
     { nom: 'VENDREDI', type: 'cardio', exercices: ['Vélo ou elliptique 60 min à intensité variable'] },
     { nom: 'SAMEDI', type: 'muscu', exercices: ['Full Body explosif : 5 exercices polyarticulaires (3 tours)'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos total', 'Planification nutritionnelle finale'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos total', 'Planification nutritionnelle'] },
   ]},
   { sem: 11, phase: 3, label: 'Phase 3 — Optimisation', jours: [
     { nom: 'LUNDI', type: 'hiit', exercices: ['HIIT Extrême 30 min : 50s effort / 10s repos', 'Intensité maximale requise'] },
     { nom: 'MARDI', type: 'muscu', exercices: ['Supersets Antagonistes : Pectoraux/Dos (4×12)', 'Finisseur bras : Curl/Triceps (3×15)'] },
     { nom: 'MERCREDI', type: 'cardio', exercices: ['Randonnée rythmée ou marche inclinée tapis 60 min'] },
     { nom: 'JEUDI', type: 'muscu', exercices: ['Soulevé de terre jambes tendues 4×10', 'Hip Thrust lourd 4×10', 'Fentes marchées lestées 3×20 pas'] },
-    { nom: 'VENDREDI', type: 'rest', exercices: ['Yoga dynamique 40 min', 'Focus respiration et mobilité articulaire'] },
+    { nom: 'VENDREDI', type: 'rest', exercices: ['Yoga dynamique 40 min', 'Focus respiration et mobilité'] },
     { nom: 'SAMEDI', type: 'cardio', exercices: ['Course à pied 60 min à allure modérée'] },
     { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Bilan avant-dernière semaine'] },
   ]},
   { sem: 12, phase: 3, label: 'Phase 3 — Révélation', jours: [
-    { nom: 'LUNDI', type: 'muscu', exercices: ['Test force relative : Squat et Bench (Charges modérées)', 'Gainage de clôture 3×1min15s'] },
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Test force relative (Charges modérées)', 'Gainage de clôture 3×1min15s'] },
     { nom: 'MARDI', type: 'hiit', exercices: ['Le Grand Défi : HIIT ultime de 20 min non-stop'] },
-    { nom: 'MERCREDI', type: 'cardio', exercices: ['Marche rapide ou vélo doux 45 min de décharge'] },
-    { nom: 'JEUDI', type: 'muscu', exercices: ['Full Body au poids du corps : Circuits de tonification globale'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Marche rapide ou vélo doux 45 min'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Full Body au poids de corps : tonification globale'] },
     { nom: 'VENDREDI', type: 'cardio', exercices: ['Dernière séance cardio : Running libre 40 min plaisir'] },
-    { nom: 'SAMEDI', type: 'rest', exercices: ['Repos complet', 'Préparation psychologique et physique au bilan final'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['BILAN FINAL DU PROGRAMME', 'Pesée ultime · Photos finales · Mesures de réussite !'] },
+    { nom: 'SAMEDI', type: 'rest', exercices: ['Repos complet', 'Préparation au bilan final'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['BILAN FINAL DU PROGRAMME', 'Pesée ultime · Photos finales · Succès !'] },
   ]}
 ];
 
 // ─── INITIALIZATION ─────────────────────────────────────
+let weightEntries = [];
+
 document.addEventListener("DOMContentLoaded", () => {
   initProgramme();
   initRevealOnScroll();
   initTrackerDate();
+  loadSavedData(); // On charge les infos sauvegardées au lancement
 });
 
+// ─── SAUVEGARDE & CHARGEMENT LOCALSTORAGE ───────────────
+function saveProfileToLocalStorage() {
+  const profile = {
+    weight: document.getElementById('weight').value,
+    height: document.getElementById('height').value,
+    age: document.getElementById('age').value,
+    sex: document.getElementById('sex').value,
+    activity: document.getElementById('activity').value,
+    goalWeight: document.getElementById('goal-weight').value
+  };
+  localStorage.setItem('fitplan_profile', JSON.stringify(profile));
+}
+
+function loadSavedData() {
+  // 1. Charger le profil utilisateur
+  const savedProfile = localStorage.getItem('fitplan_profile');
+  if (savedProfile) {
+    const profile = JSON.parse(savedProfile);
+    document.getElementById('weight').value = profile.weight;
+    document.getElementById('height').value = profile.height;
+    document.getElementById('age').value = profile.age;
+    document.getElementById('sex').value = profile.sex;
+    document.getElementById('activity').value = profile.activity;
+    document.getElementById('goal-weight').value = profile.goalWeight;
+    
+    // Lance le calcul automatique pour afficher le bloc résultat directement
+    calculateBMI(false); 
+  }
+
+  // 2. Charger le tracker de poids
+  const savedEntries = localStorage.getItem('fitplan_weights');
+  if (savedEntries) {
+    weightEntries = JSON.parse(savedEntries);
+    renderTracker();
+  }
+}
+
 // ─── IMC & CALORIES CALCULATOR ──────────────────────────
-function calculateBMI() {
+function calculateBMI(shouldSave = true) {
   const weight = parseFloat(document.getElementById('weight').value);
   const height = parseFloat(document.getElementById('height').value);
   const age = parseInt(document.getElementById('age').value);
@@ -573,15 +613,19 @@ function calculateBMI() {
   const goalWeight = parseFloat(document.getElementById('goal-weight').value);
 
   if (!weight || !height || !age || !goalWeight) {
-    alert("Veuillez remplir correctement tous les champs.");
+    if (shouldSave) alert("Veuillez remplir correctement tous les champs.");
     return;
   }
 
-  // IMC
+  // Sauvegarde si le calcul provient d'un clic utilisateur
+  if (shouldSave) {
+    saveProfileToLocalStorage();
+  }
+
+  // Calcul IMC
   const heightMeters = height / 100;
   const bmi = weight / (heightMeters * heightMeters);
   
-  // Catégorie IMC & Remplissage barre
   let cat = "";
   let barPercent = 0;
   let advice = "";
@@ -605,16 +649,13 @@ function calculateBMI() {
   document.getElementById('bmi-bar').style.width = barPercent + "%";
   document.getElementById('bmi-advice').innerText = advice;
 
-  // Calcul Métabolisme de Base (Mifflin-St Jeor)
+  // Calcul TDEE (Mifflin-St Jeor)
   let bmr = (10 * weight) + (6.25 * height) - (5 * age);
   bmr = (sex === 'm') ? bmr + 5 : bmr - 161;
 
-  // Dépense Énergétique Totale (TDEE)
   const tdee = bmr * activity;
-  // Cible de perte de poids (Déficit sain de ~450 kcal)
   const targetCalories = Math.max(1200, Math.round(tdee - 450));
 
-  // Rendu des résultats caloriques
   const calResultContainer = document.getElementById('calorie-result');
   calResultContainer.innerHTML = `
     <div class="cal-box">
@@ -627,7 +668,7 @@ function calculateBMI() {
     </div>
     <div class="cal-box" style="border-color: var(--green3); background: var(--green-light)">
       <div class="cal-val" style="color: var(--green)">${targetCalories} kcal</div>
-      <div class="cal-label" style="color: var(--green)">Votre Cible Perte de Poids</div>
+      <div class="cal-label" style="color: var(--green)">Cible Perte de Poids</div>
     </div>
   `;
 
@@ -640,14 +681,12 @@ function initProgramme() {
   const contentContainer = document.getElementById('weeks-content');
 
   programme.forEach((s, idx) => {
-    // Création du bouton de navigation
     const btn = document.createElement('button');
     btn.className = `week-btn ${idx === 0 ? 'active' : ''}`;
     btn.innerText = `Sem ${s.sem}`;
     btn.onclick = () => switchWeek(s.sem);
     nav.appendChild(btn);
 
-    // Création du bloc de contenu de la semaine
     const weekWrap = document.createElement('div');
     weekWrap.id = `week-${s.sem}`;
     weekWrap.className = `week-content ${idx === 0 ? 'active' : ''}`;
@@ -696,8 +735,6 @@ function switchWeek(weekNum) {
 }
 
 // ─── WEIGHT TRACKER LOGIC ───────────────────────────────
-let weightEntries = [];
-
 function initTrackerDate() {
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('track-date').value = today;
@@ -714,8 +751,10 @@ function addEntry() {
 
   const newEntry = { date: dateInput, weight: weightInput };
   weightEntries.push(newEntry);
-  // Tri chronologique des entrées
   weightEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // Sauvegarder la liste des poids
+  localStorage.setItem('fitplan_weights', JSON.stringify(weightEntries));
 
   renderTracker();
   document.getElementById('track-weight').value = '';
@@ -729,7 +768,6 @@ function renderTracker() {
   }
 
   let html = '';
-  // On prend la première entrée comme référence absolue pour la jauge de progression
   const initialWeight = weightEntries[0].weight;
 
   weightEntries.forEach((entry, idx) => {
@@ -750,10 +788,7 @@ function renderTracker() {
       }
     }
 
-    // Calcul de proportion visuelle simple pour la jauge de poids (base 100kg max pour l'affichage)
     const barWidth = Math.min(100, Math.max(10, (entry.weight / initialWeight) * 100));
-
-    // Formater la date en français lisible
     const options = { day: 'numeric', month: 'short' };
     const formattedDate = new Date(entry.date).toLocaleDateString('fr-FR', options);
 
@@ -789,7 +824,6 @@ function initRevealOnScroll() {
   };
 
   window.addEventListener('scroll', revealOnScroll);
-  // Premier trigger à l'allumage
   revealOnScroll();
 }
 </script>
