@@ -173,12 +173,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-/* PROGRESS RING */
-.progress-rings{display:flex;justify-content:center;gap:3rem;margin:2rem 0}
-.ring-wrap{text-align:center}
-.ring-label{font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:.5rem}
-.ring-val{font-family:var(--font-display);font-size:.85rem;color:var(--text);letter-spacing:.5px}
-
 @media(max-width:768px){
   .bmi-inputs{grid-template-columns:1fr 1fr}
   .week-grid{grid-template-columns:1fr}
@@ -498,8 +492,8 @@ const programme = [
   ]},
   { sem: 6, phase: 2, label: 'Phase 2 — Intensification', jours: [
     { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 5×8', 'Incliné haltères 4×10', 'Rowing unilatéral 4×10', 'Face pull 3×15'] },
-    { nom: 'MARDI', type: 'cardio', exercices: ['Course 50 min en zone 2 (conversation possible)', 'Étirements profonds 10 min'] },
-    { nom: 'MERCREDI', type: 'hiit', exercices: ['Tabata 4 rounds : 20s max / 10s repos × 8', 'Exercices : squat saut, burpee, crunch bicycle, planche'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course 50 min en zone 2', 'Étirements profonds 10 min'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['Tabata 4 rounds : 20s max / 10s repos × 8', 'Squat saut, burpee, crunch, planche'] },
     { nom: 'JEUDI', type: 'muscu', exercices: ['Deadlift 5×5', 'Press Arnold 4×10', 'Curl incliné 3×12', 'Extension triceps 3×12'] },
     { nom: 'VENDREDI', type: 'cardio', exercices: ['Vélo intensif 45 min', 'Intervalles 2 min fort / 3 min modéré × 6'] },
     { nom: 'SAMEDI', type: 'muscu', exercices: ['Full body circuit : 8 exercices × 15 reps × 3', 'Abs finisher 10 min'] },
@@ -515,197 +509,289 @@ const programme = [
     { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS — bilan mi-programme'] },
   ]},
   { sem: 8, phase: 2, label: 'Phase 2 — Intensification', jours: [
-    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 5×5 PR attempt', 'Incliné 4×8', 'Soulevé de terre 4×5', 'Shoulder press 4×8'] },
-    { nom: 'MARDI', type: 'cardio', exercices: ['Course 60 min — objectif distance', 'Record personnel à battre'] },
-    { nom: 'MERCREDI', type: 'hiit', exercices: ['Circuit 35 min — niveau intermédiaire', '8 stations × 50s / 10s × 3 tours'] },
-    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération active — natation 30 min', 'Massage ou foam roller'] },
-    { nom: 'VENDREDI', type: 'muscu', exercices: ['Full body force : 5×5 squat, bench, row', 'Core finisher avancé'] },
-    { nom: 'SAMEDI', type: 'hiit', exercices: ['Défi cardio 40 min : enchaînements HIIT', 'Photos et mesures bilan 2 mois'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS TOTAL', 'Pesée · Bilan 2 mois complet'] },
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 5×5 (Nouveau Record)', 'Incliné barre 4×8', 'Soulevé de terre 4×5', 'Shoulder press 4×8'] },
+    { nom: 'MARDI', type: 'hiit', exercices: ['HIIT Pyramide 25 min : 15s-30s-45s-30s-15s effort', 'Corde à sauter, burpees, mountain climbers'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course continue 60 min', 'Objectif endurance fondamentale'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Repos total', 'Hydratation accrue', 'Massage au rouleau (foam roller) 15 min'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Fentes bulgares 4×10/jambe', 'Tractions pronation 4×max', 'Dips 4×12', 'Gainage bûcheron 3×12'] },
+    { nom: 'SAMEDI', type: 'cardio', exercices: ['Natation 50 min intensive ou cyclisme 90 min'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Bilan Fin de Phase 2'] },
   ]},
-  // Phase 3 : Affinage (sem 9-12)
-  { sem: 9, phase: 3, label: 'Phase 3 — Affinage', jours: [
-    { nom: 'LUNDI', type: 'muscu', exercices: ['Superset : Squat + fente 4×10+10', 'Superset : Bench + pompes 4×8+max', 'Core circuit 15 min'] },
-    { nom: 'MARDI', type: 'cardio', exercices: ['Jogging 65 min zone 2', 'Strides finales : 4 × 100m'] },
-    { nom: 'MERCREDI', type: 'hiit', exercices: ['AMRAP 25 min : 10 burpees, 15 squat, 20 mountain climbers', 'Stretching 10 min'] },
-    { nom: 'JEUDI', type: 'muscu', exercices: ['Deadlift 5×5', 'Hip thrust 4×15', 'Superset tirage + rowing 4×10', 'Gainage complexe'] },
-    { nom: 'VENDREDI', type: 'cardio', exercices: ['Vélo ou elliptique 50 min', 'Intervalles progressifs'] },
-    { nom: 'SAMEDI', type: 'muscu', exercices: ['Full body avec supersets', '60 min — haute intensité'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['Récupération · Pesée sem 9'] },
+  // Phase 3 : Optimisation et Maintien (sem 9-12)
+  { sem: 9, phase: 3, label: 'Phase 3 — Optimisation', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Supersets Squat/Fentes (4×10)', 'Supersets Bench/Rowing (4×10)', 'Gainage militaire 3×1min'] },
+    { nom: 'MARDI', type: 'hiit', exercices: ['AMRAP 20 min : un maximum de tours possibles', '15 Squats sautés, 10 Pompes, 15 Sit-ups, 30 Jumping Jacks'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course fractionnée : 10× (1min rapide / 1min lent)', 'Échauffement et retour au calme 10 min'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération active', 'Marche en forêt 40 min', 'Stretching bas du corps'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Soulevé de terre 4×6 lourd', 'Press militaire 4×8', 'Tirage poulie haute 4×10', 'Oiseaux haltères 3×15'] },
+    { nom: 'SAMEDI', type: 'hiit', exercices: ['Circuit Brûle-Graisse : 45s effort / 15s repos (4 tours)', 'Burpees, Thrusters haltères, Mountain climbers, Kicks'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Pesée et ajustements macro'] },
   ]},
-  { sem: 10, phase: 3, label: 'Phase 3 — Affinage', jours: [
-    { nom: 'LUNDI', type: 'hiit', exercices: ['HIIT avancé 30 min', 'Circuits complexes sans repos longue durée'] },
-    { nom: 'MARDI', type: 'muscu', exercices: ['Squat 6×4 très lourd', 'Tractions lestées 4×6', 'Développé incliné 4×8', 'Core avancé 20 min'] },
-    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course 70 min — rythme soutenu', 'Objectif : améliorer le temps sem 5'] },
-    { nom: 'JEUDI', type: 'rest', exercices: ['Mobilité complète 30 min', 'Yoga de récupération'] },
-    { nom: 'VENDREDI', type: 'muscu', exercices: ['Deadlift 5×3 max', 'Full body hypertr. 4×12', 'Supersets intenses'] },
-    { nom: 'SAMEDI', type: 'hiit', exercices: ['Circuit défi 45 min', 'Maximal effort — last push'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos · Pesée · Photos sem 10'] },
+  { sem: 10, phase: 3, label: 'Phase 3 — Optimisation', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat lourd 4×6', 'Presse à cuisses 3×12', 'Leg curl 3×15', 'Mollets debout 4×20'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course à pied stable 50 min', 'Maintenir une fréquence de brûlage des graisses optimale'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['Tabata hardcore : 2 blocs complets de 8 min', 'Burpees et Thrusters au poids du corps'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Développé couché haltères 4×8', 'Rowing barre T 4×8', 'Élévations latérales 3×12', 'Gainage planche 4×1min'] },
+    { nom: 'VENDREDI', type: 'cardio', exercices: ['Vélo ou elliptique 60 min à intensité variable'] },
+    { nom: 'SAMEDI', type: 'muscu', exercices: ['Full Body explosif : 5 exercices polyarticulaires (3 tours)'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos total', 'Planification nutritionnelle finale'] },
   ]},
-  { sem: 11, phase: 3, label: 'Phase 3 — Affinage', jours: [
-    { nom: 'LUNDI', type: 'muscu', exercices: ['Semaine de consolidation — charges modérées', 'Technique parfaite sur tous les exercices'] },
-    { nom: 'MARDI', type: 'cardio', exercices: ['Course longue détendue 60 min', 'Profitez de vos progrès !'] },
-    { nom: 'MERCREDI', type: 'hiit', exercices: ['HIIT modéré 25 min', 'Focus sur les sensations'] },
-    { nom: 'JEUDI', type: 'muscu', exercices: ['Full body équilibré 4×10', 'Tous groupes musculaires'] },
-    { nom: 'VENDREDI', type: 'cardio', exercices: ['Activité au choix 45 min', 'Sport que vous aimez'] },
-    { nom: 'SAMEDI', type: 'rest', exercices: ['Repos actif', 'Préparation semaine finale'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos · Pesée · Photos sem 11'] },
+  { sem: 11, phase: 3, label: 'Phase 3 — Optimisation', jours: [
+    { nom: 'LUNDI', type: 'hiit', exercices: ['HIIT Extrême 30 min : 50s effort / 10s repos', 'Intensité maximale requise'] },
+    { nom: 'MARDI', type: 'muscu', exercices: ['Supersets Antagonistes : Pectoraux/Dos (4×12)', 'Finisseur bras : Curl/Triceps (3×15)'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Randonnée rythmée ou marche inclinée tapis 60 min'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Soulevé de terre jambes tendues 4×10', 'Hip Thrust lourd 4×10', 'Fentes marchées lestées 3×20 pas'] },
+    { nom: 'VENDREDI', type: 'rest', exercices: ['Yoga dynamique 40 min', 'Focus respiration et mobilité articulaire'] },
+    { nom: 'SAMEDI', type: 'cardio', exercices: ['Course à pied 60 min à allure modérée'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Bilan avant-dernière semaine'] },
   ]},
-  { sem: 12, phase: 3, label: 'Phase 3 — Affinage', jours: [
-    { nom: 'LUNDI', type: 'muscu', exercices: ['SEMAINE FINALE — Record personnel squat', 'Record personnel bench press', 'Célébrez vos progrès !'] },
-    { nom: 'MARDI', type: 'cardio', exercices: ['Course test 5 km — chronométrez !', 'Comparez avec la semaine 1'] },
-    { nom: 'MERCREDI', type: 'hiit', exercices: ['Dernier HIIT du programme', 'Circuit final 30 min'] },
-    { nom: 'JEUDI', type: 'muscu', exercices: ['Record personnel deadlift', 'Full body finisher', 'VOUS AVEZ TERMINÉ 🎉'] },
-    { nom: 'VENDREDI', type: 'rest', exercices: ['Récupération active', 'Réflexion sur les 12 semaines'] },
-    { nom: 'SAMEDI', type: 'rest', exercices: ['Activité plaisir — sport au choix', 'Partagez vos résultats !'] },
-    { nom: 'DIMANCHE', type: 'rest', exercices: ['BILAN FINAL', 'Pesée · Photos · Mesures · Célébration 🏆'] },
-  ]},
+  { sem: 12, phase: 3, label: 'Phase 3 — Révélation', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Test force relative : Squat et Bench (Charges modérées)', 'Gainage de clôture 3×1min15s'] },
+    { nom: 'MARDI', type: 'hiit', exercices: ['Le Grand Défi : HIIT ultime de 20 min non-stop'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Marche rapide ou vélo doux 45 min de décharge'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Full Body au poids du corps : Circuits de tonification globale'] },
+    { nom: 'VENDREDI', type: 'cardio', exercices: ['Dernière séance cardio : Running libre 40 min plaisir'] },
+    { nom: 'SAMEDI', type: 'rest', exercices: ['Repos complet', 'Préparation psychologique et physique au bilan final'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['BILAN FINAL DU PROGRAMME', 'Pesée ultime · Photos finales · Mesures de réussite !'] },
+  ]}
 ];
 
-const typeColors = { cardio:'day-cardio', muscu:'day-muscu', rest:'day-rest', hiit:'day-hiit' };
-const typeLabels = { cardio:'CARDIO', muscu:'MUSCULATION', rest:'REPOS', hiit:'HIIT' };
-const durationMap = { cardio:'40-60 min', muscu:'50-70 min', rest:'—', hiit:'30-40 min' };
-const phaseLabels = ['','Phase 1 — Fondation','Phase 2 — Intensification','Phase 3 — Affinage'];
-const phaseClasses = ['','phase-1','phase-2','phase-3'];
+// ─── INITIALIZATION ─────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  initProgramme();
+  initRevealOnScroll();
+  initTrackerDate();
+});
 
-// Build programme HTML
-function buildProgramme() {
-  const nav = document.getElementById('weeks-nav');
-  const content = document.getElementById('weeks-content');
-  programme.forEach((week, i) => {
-    // nav button
-    const btn = document.createElement('button');
-    btn.className = 'week-btn' + (i === 0 ? ' active' : '');
-    btn.textContent = `Sem ${week.sem}`;
-    btn.onclick = () => showWeek(i);
-    nav.appendChild(btn);
-    // content
-    const div = document.createElement('div');
-    div.className = 'week-content' + (i === 0 ? ' active' : '');
-    div.id = `week-${i}`;
-    div.innerHTML = `
-      <span class="phase-badge ${phaseClasses[week.phase]}">${phaseLabels[week.phase]}</span>
-      <div class="week-grid">
-        ${week.jours.map(j => `
-          <div class="day-card ${typeColors[j.type]}">
-            <div class="day-card-header">
-              <span class="day-name">${j.nom}</span>
-              <span class="day-type">${typeLabels[j.type]}</span>
-            </div>
-            <div class="day-body">
-              <ul class="exercise-list">
-                ${j.exercices.map(e => `<li class="exercise-item">${e}</li>`).join('')}
-              </ul>
-              <div class="day-duration">⏱ ${durationMap[j.type]}</div>
-            </div>
-          </div>
-        `).join('')}
-      </div>`;
-    content.appendChild(div);
-  });
-}
-
-function showWeek(i) {
-  document.querySelectorAll('.week-btn').forEach((b, j) => b.classList.toggle('active', j === i));
-  document.querySelectorAll('.week-content').forEach((c, j) => c.classList.toggle('active', j === i));
-}
-
-// BMI Calculator
+// ─── IMC & CALORIES CALCULATOR ──────────────────────────
 function calculateBMI() {
-  const w = parseFloat(document.getElementById('weight').value);
-  const h = parseFloat(document.getElementById('height').value) / 100;
-  const a = parseInt(document.getElementById('age').value);
-  const s = document.getElementById('sex').value;
-  const act = parseFloat(document.getElementById('activity').value);
-  const gw = parseFloat(document.getElementById('goal-weight').value);
+  const weight = parseFloat(document.getElementById('weight').value);
+  const height = parseFloat(document.getElementById('height').value);
+  const age = parseInt(document.getElementById('age').value);
+  const sex = document.getElementById('sex').value;
+  const activity = parseFloat(document.getElementById('activity').value);
+  const goalWeight = parseFloat(document.getElementById('goal-weight').value);
 
-  if (!w || !h || !a) { alert('Remplissez tous les champs !'); return; }
+  if (!weight || !height || !age || !goalWeight) {
+    alert("Veuillez remplir correctement tous les champs.");
+    return;
+  }
 
-  const bmi = (w / (h * h)).toFixed(1);
-  let cat, color, barWidth, advice;
-  if (bmi < 18.5) { cat = 'Insuffisance pondérale'; color = '#74b9ff'; barWidth = 15; }
-  else if (bmi < 25) { cat = 'Poids normal ✓'; color = '#00b894'; barWidth = 40; }
-  else if (bmi < 30) { cat = 'Surpoids'; color = '#fdcb6e'; barWidth = 65; }
-  else { cat = 'Obésité'; color = '#e17055'; barWidth = 88; }
+  // IMC
+  const heightMeters = height / 100;
+  const bmi = weight / (heightMeters * heightMeters);
+  
+  // Catégorie IMC & Remplissage barre
+  let cat = "";
+  let barPercent = 0;
+  let advice = "";
 
-  // BMR (Mifflin-St Jeor)
-  let bmr = s === 'm'
-    ? 10 * w + 6.25 * (h * 100) - 5 * a + 5
-    : 10 * w + 6.25 * (h * 100) - 5 * a - 161;
-  const tdee = Math.round(bmr * act);
-  const deficit = Math.round(tdee - 450);
-  const agressif = Math.round(tdee - 700);
+  if (bmi < 18.5) {
+    cat = "Maigreur"; barPercent = 15;
+    advice = "Votre poids actuel est un peu bas. Le programme se focalisera sur le renforcement musculaire sain.";
+  } else if (bmi < 25) {
+    cat = "Corpulence normale"; barPercent = 45;
+    advice = "Excellent ! Votre objectif principal sera la recomposition corporelle : tonifier vos muscles et affiner votre silhouette.";
+  } else if (bmi < 30) {
+    cat = "Surpoids"; barPercent = 70;
+    advice = "Le programme de déficit calorique modéré et régulier associé au cardio va idéalement enclencher votre perte de masse graisseuse.";
+  } else {
+    cat = "Obésité"; barPercent = 90;
+    advice = "Priorité à la régularité et à la sécurité. Les séances progressives sont conçues pour protéger vos articulations tout en activant votre métabolisme.";
+  }
 
-  const kgToLose = gw ? (w - gw).toFixed(1) : '?';
-  const weeks = gw ? Math.ceil((w - gw) * 7700 / (450 * 7)) : '?';
+  document.getElementById('bmi-val').innerText = bmi.toFixed(1);
+  document.getElementById('bmi-cat').innerText = cat;
+  document.getElementById('bmi-bar').style.width = barPercent + "%";
+  document.getElementById('bmi-advice').innerText = advice;
 
-  advice = `<strong>Votre poids actuel :</strong> ${w} kg · IMC ${bmi}<br>
-    ${gw ? `<strong>Objectif :</strong> ${gw} kg (${kgToLose > 0 ? '-' + kgToLose : '+' + Math.abs(kgToLose)} kg) · Durée estimée : <strong>${weeks} semaines</strong>` : ''}
-    <br><br>Votre métabolisme de base est de <strong>${Math.round(bmr)} kcal/jour</strong> et vos dépenses totales de <strong>${tdee} kcal/jour</strong>.`;
+  // Calcul Métabolisme de Base (Mifflin-St Jeor)
+  let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+  bmr = (sex === 'm') ? bmr + 5 : bmr - 161;
 
-  document.getElementById('bmi-val').textContent = bmi;
-  document.getElementById('bmi-cat').textContent = cat;
-  document.getElementById('bmi-bar').style.width = barWidth + '%';
-  document.getElementById('bmi-bar').style.background = color;
-  document.getElementById('bmi-advice').innerHTML = advice;
-  document.getElementById('calorie-result').innerHTML = `
-    <div class="cal-box"><div class="cal-val">${tdee}</div><div class="cal-label">Maintien kcal/j</div></div>
-    <div class="cal-box"><div class="cal-val" style="color:var(--green)">${deficit}</div><div class="cal-label">Perte douce (-450)</div></div>
-    <div class="cal-box"><div class="cal-val" style="color:var(--orange)">${agressif}</div><div class="cal-label">Perte accélérée (-700)</div></div>`;
+  // Dépense Énergétique Totale (TDEE)
+  const tdee = bmr * activity;
+  // Cible de perte de poids (Déficit sain de ~450 kcal)
+  const targetCalories = Math.max(1200, Math.round(tdee - 450));
+
+  // Rendu des résultats caloriques
+  const calResultContainer = document.getElementById('calorie-result');
+  calResultContainer.innerHTML = `
+    <div class="cal-box">
+      <div class="cal-val">${Math.round(bmr)} kcal</div>
+      <div class="cal-label">Métabolisme de Base</div>
+    </div>
+    <div class="cal-box">
+      <div class="cal-val">${Math.round(tdee)} kcal</div>
+      <div class="cal-label">Dépense Journalière</div>
+    </div>
+    <div class="cal-box" style="border-color: var(--green3); background: var(--green-light)">
+      <div class="cal-val" style="color: var(--green)">${targetCalories} kcal</div>
+      <div class="cal-label" style="color: var(--green)">Votre Cible Perte de Poids</div>
+    </div>
+  `;
+
   document.getElementById('bmi-result').classList.add('show');
 }
 
-// Weight Tracker
-let entries = JSON.parse(localStorage.getItem('fitplan_weights') || '[]');
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('track-date').value = today;
+// ─── PROGRAMME GENERATION ───────────────────────────────
+function initProgramme() {
+  const nav = document.getElementById('weeks-nav');
+  const contentContainer = document.getElementById('weeks-content');
+
+  programme.forEach((s, idx) => {
+    // Création du bouton de navigation
+    const btn = document.createElement('button');
+    btn.className = `week-btn ${idx === 0 ? 'active' : ''}`;
+    btn.innerText = `Sem ${s.sem}`;
+    btn.onclick = () => switchWeek(s.sem);
+    nav.appendChild(btn);
+
+    // Création du bloc de contenu de la semaine
+    const weekWrap = document.createElement('div');
+    weekWrap.id = `week-${s.sem}`;
+    weekWrap.className = `week-content ${idx === 0 ? 'active' : ''}`;
+
+    let phaseClass = s.phase === 1 ? 'phase-1' : (s.phase === 2 ? 'phase-2' : 'phase-3');
+    
+    let daysHtml = '';
+    s.jours.forEach(j => {
+      let durationStr = j.type === 'rest' ? 'Relaxation / Récupération' : (j.type === 'hiit' ? 'Durée : 20-30 min' : 'Durée : 45-60 min');
+      let typeLabel = j.type === 'muscu' ? 'Musculation' : j.type.toUpperCase();
+
+      let exercisesHtml = '';
+      j.exercices.forEach(ex => {
+        exercisesHtml += `<li class="exercise-item">${ex}</li>`;
+      });
+
+      daysHtml += `
+        <div class="day-card day-${j.type}">
+          <div class="day-card-header">
+            <span class="day-name">${j.nom}</span>
+            <span class="day-type">${typeLabel}</span>
+          </div>
+          <div class="day-body">
+            <ul class="exercise-list">${exercisesHtml}</ul>
+            <div class="day-duration">⏱️ ${durationStr}</div>
+          </div>
+        </div>
+      `;
+    });
+
+    weekWrap.innerHTML = `
+      <div class="phase-badge ${phaseClass}">${s.label}</div>
+      <div class="week-grid">${daysHtml}</div>
+    `;
+    contentContainer.appendChild(weekWrap);
+  });
+}
+
+function switchWeek(weekNum) {
+  document.querySelectorAll('.week-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === (weekNum - 1));
+  });
+  document.querySelectorAll('.week-content').forEach(content => {
+    content.classList.toggle('active', content.id === `week-${weekNum}`);
+  });
+}
+
+// ─── WEIGHT TRACKER LOGIC ───────────────────────────────
+let weightEntries = [];
+
+function initTrackerDate() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('track-date').value = today;
+}
 
 function addEntry() {
-  const date = document.getElementById('track-date').value;
-  const weight = parseFloat(document.getElementById('track-weight').value);
-  if (!date || !weight) return;
-  entries.unshift({ date, weight });
-  entries = entries.slice(0, 20); // max 20
-  localStorage.setItem('fitplan_weights', JSON.stringify(entries));
-  renderEntries();
+  const dateInput = document.getElementById('track-date').value;
+  const weightInput = parseFloat(document.getElementById('track-weight').value);
+
+  if (!dateInput || !weightInput) {
+    alert("Veuillez saisir une date et un poids valides.");
+    return;
+  }
+
+  const newEntry = { date: dateInput, weight: weightInput };
+  weightEntries.push(newEntry);
+  // Tri chronologique des entrées
+  weightEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  renderTracker();
   document.getElementById('track-weight').value = '';
 }
 
-function renderEntries() {
+function renderTracker() {
   const container = document.getElementById('tracker-entries');
-  if (!entries.length) {
-    container.innerHTML = '<div class="empty-state">Aucune entrée pour l\'instant. Commencez à enregistrer votre poids !</div>';
+  if (weightEntries.length === 0) {
+    container.innerHTML = `<div class="empty-state">Aucune entrée pour l'instant. Commencez à enregistrer votre poids !</div>`;
     return;
   }
-  const maxW = Math.max(...entries.map(e => e.weight));
-  container.innerHTML = entries.map((e, i) => {
-    const prev = entries[i + 1];
-    let diffHtml = '';
-    if (prev) {
-      const diff = (e.weight - prev.weight).toFixed(1);
-      const cls = diff < 0 ? 'neg' : diff > 0 ? 'pos' : 'zero';
-      const sign = diff > 0 ? '+' : '';
-      diffHtml = `<span class="entry-diff ${cls}">${sign}${diff} kg</span>`;
+
+  let html = '';
+  // On prend la première entrée comme référence absolue pour la jauge de progression
+  const initialWeight = weightEntries[0].weight;
+
+  weightEntries.forEach((entry, idx) => {
+    let diffText = '—';
+    let diffClass = 'zero';
+
+    if (idx > 0) {
+      const diff = entry.weight - weightEntries[idx - 1].weight;
+      if (diff < 0) {
+        diffText = `${diff.toFixed(1)} kg`;
+        diffClass = 'neg';
+      } else if (diff > 0) {
+        diffText = `+${diff.toFixed(1)} kg`;
+        diffClass = 'pos';
+      } else {
+        diffText = `0.0 kg`;
+        diffClass = 'zero';
+      }
     }
-    const barW = Math.round((e.weight / maxW) * 100);
-    return `<div class="entry-row">
-      <span class="entry-date">${new Date(e.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})}</span>
-      <span class="entry-weight">${e.weight} kg</span>
-      ${diffHtml}
-      <div class="entry-bar"><div class="entry-bar-fill" style="width:${barW}%"></div></div>
-    </div>`;
-  }).join('');
+
+    // Calcul de proportion visuelle simple pour la jauge de poids (base 100kg max pour l'affichage)
+    const barWidth = Math.min(100, Math.max(10, (entry.weight / initialWeight) * 100));
+
+    // Formater la date en français lisible
+    const options = { day: 'numeric', month: 'short' };
+    const formattedDate = new Date(entry.date).toLocaleDateString('fr-FR', options);
+
+    html += `
+      <div class="entry-row">
+        <div class="entry-date">${formattedDate}</div>
+        <div class="entry-weight">${entry.weight.toFixed(1)} kg</div>
+        <div class="entry-diff ${diffClass}">${diffText}</div>
+        <div class="entry-bar">
+          <div class="entry-bar-fill" style="width: ${barWidth}%"></div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
 }
 
-// Reveal on scroll
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ─── SCROLL REVEAL ANIMATION ────────────────────────────
+function initRevealOnScroll() {
+  const reveals = document.querySelectorAll('.reveal');
+  
+  const revealOnScroll = () => {
+    reveals.forEach(r => {
+      const windowHeight = window.innerHeight;
+      const elementTop = r.getBoundingClientRect().top;
+      const elementVisible = 100;
 
-// Init
-buildProgramme();
-renderEntries();
+      if (elementTop < windowHeight - elementVisible) {
+        r.classList.add('visible');
+      }
+    });
+  };
+
+  window.addEventListener('scroll', revealOnScroll);
+  // Premier trigger à l'allumage
+  revealOnScroll();
+}
 </script>
 </body>
 </html>
