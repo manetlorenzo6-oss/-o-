@@ -6,6 +6,7 @@
 <title>FitPlan — Programme Perte de Poids 12 Semaines</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -147,6 +148,7 @@ select.input-field{cursor:pointer}
 .tracker-section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
 .tracker-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow)}
 .tracker-form{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:end;margin-bottom:2rem}
+.chart-container{margin-bottom:2.5rem;padding:1rem;background:var(--surface2);border-radius:12px;border:1px solid var(--border);position:relative;height:320px;width:100%}
 .tracker-entries{display:flex;flex-direction:column;gap:.75rem}
 .entry-row{display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--bg);border-radius:10px;animation:fadeUp .3s ease both}
 .entry-date{font-size:.75rem;color:var(--text3);font-weight:500;min-width:80px}
@@ -203,7 +205,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
   <div class="header-badge">Programme 12 semaines</div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-eyebrow">
     <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -229,7 +230,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
-<!-- BMI -->
 <section class="bmi-section reveal" id="bmi">
   <div class="section-header">
     <div class="section-num">01</div>
@@ -292,7 +292,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
-<!-- PROGRAMME -->
 <section class="programme-section reveal" id="programme">
   <div class="section-header">
     <div class="section-num">02</div>
@@ -303,7 +302,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
   <div id="weeks-content"></div>
 </section>
 
-<!-- NUTRITION -->
 <section class="nutrition-section reveal" id="nutrition">
   <div class="nutrition-inner">
     <div class="section-header">
@@ -370,7 +368,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
-<!-- CONSEILS -->
 <section class="tips-section reveal" id="conseils">
   <div class="section-header">
     <div class="section-num">04</div>
@@ -410,7 +407,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
-<!-- TRACKER -->
 <section class="tracker-section reveal" id="tracker">
   <div class="section-header">
     <div class="section-num">05</div>
@@ -428,6 +424,11 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
       </div>
       <button class="btn-add" onclick="addEntry()">+ AJOUTER</button>
     </div>
+    
+    <div class="chart-container" id="chart-wrap" style="display:none;">
+      <canvas id="weightChart"></canvas>
+    </div>
+
     <div id="tracker-entries">
       <div class="empty-state">Aucune entrée pour l'instant. Commencez à enregistrer votre poids !</div>
     </div>
@@ -443,7 +444,6 @@ footer{background:var(--text);padding:3rem 2rem;text-align:center}
 <script>
 // ─── DATA ───────────────────────────────────────────────
 const programme = [
-  // Phase 1 : Fondation (sem 1-4)
   { sem: 1, phase: 1, label: 'Phase 1 — Fondation', jours: [
     { nom: 'LUNDI', type: 'cardio', exercices: ['Marche rapide 30 min', 'Étirements dynamiques 10 min', 'Gainage basique 3×30s'] },
     { nom: 'MARDI', type: 'muscu', exercices: ['Squats 3×12', 'Pompes genoux 3×10', 'Rowing haltère 3×12', 'Fentes avant 3×10'] },
@@ -480,7 +480,6 @@ const programme = [
     { nom: 'SAMEDI', type: 'cardio', exercices: ['Sortie longue : marche-course 55 min', 'Bilan 1er mois'] },
     { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS TOTAL', 'Pesée · Photos · Mesures corporelles'] },
   ]},
-  // Phase 2 : Intensification (sem 5-8)
   { sem: 5, phase: 2, label: 'Phase 2 — Intensification', jours: [
     { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 4×10 — charge +5%', 'Bench press 4×10', 'Soulevé de terre 4×8', 'Gainage 4×1min'] },
     { nom: 'MARDI', type: 'hiit', exercices: ['HIIT 25 min : 40s effort / 20s repos × 12', 'Sprint, burpees, mountain climbers'] },
@@ -517,7 +516,6 @@ const programme = [
     { nom: 'SAMEDI', type: 'cardio', exercices: ['Natation 50 min intensive ou cyclisme 90 min'] },
     { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Bilan Fin de Phase 2'] },
   ]},
-  // Phase 3 : Optimisation (sem 9-12)
   { sem: 9, phase: 3, label: 'Phase 3 — Optimisation', jours: [
     { nom: 'LUNDI', type: 'muscu', exercices: ['Supersets Squat/Fentes (4×10)', 'Supersets Bench/Rowing (4×10)', 'Gainage militaire 3×1min'] },
     { nom: 'MARDI', type: 'hiit', exercices: ['AMRAP 20 min : max de tours', '15 Squats sautés, 10 Pompes, 15 Sit-ups, 30 Jumping Jacks'] },
@@ -558,12 +556,13 @@ const programme = [
 
 // ─── INITIALIZATION ─────────────────────────────────────
 let weightEntries = [];
+let myChart = null; // Variable globale pour stocker l'instance du graphique
 
 document.addEventListener("DOMContentLoaded", () => {
   initProgramme();
   initRevealOnScroll();
   initTrackerDate();
-  loadSavedData(); // On charge les infos sauvegardées au lancement
+  loadSavedData();
 });
 
 // ─── SAUVEGARDE & CHARGEMENT LOCALSTORAGE ───────────────
@@ -580,7 +579,6 @@ function saveProfileToLocalStorage() {
 }
 
 function loadSavedData() {
-  // 1. Charger le profil utilisateur
   const savedProfile = localStorage.getItem('fitplan_profile');
   if (savedProfile) {
     const profile = JSON.parse(savedProfile);
@@ -590,16 +588,14 @@ function loadSavedData() {
     document.getElementById('sex').value = profile.sex;
     document.getElementById('activity').value = profile.activity;
     document.getElementById('goal-weight').value = profile.goalWeight;
-    
-    // Lance le calcul automatique pour afficher le bloc résultat directement
     calculateBMI(false); 
   }
 
-  // 2. Charger le tracker de poids
   const savedEntries = localStorage.getItem('fitplan_weights');
   if (savedEntries) {
     weightEntries = JSON.parse(savedEntries);
     renderTracker();
+    updateChart(); // Génère le graphique au démarrage si des données existent
   }
 }
 
@@ -617,12 +613,10 @@ function calculateBMI(shouldSave = true) {
     return;
   }
 
-  // Sauvegarde si le calcul provient d'un clic utilisateur
   if (shouldSave) {
     saveProfileToLocalStorage();
   }
 
-  // Calcul IMC
   const heightMeters = height / 100;
   const bmi = weight / (heightMeters * heightMeters);
   
@@ -649,7 +643,6 @@ function calculateBMI(shouldSave = true) {
   document.getElementById('bmi-bar').style.width = barPercent + "%";
   document.getElementById('bmi-advice').innerText = advice;
 
-  // Calcul TDEE (Mifflin-St Jeor)
   let bmr = (10 * weight) + (6.25 * height) - (5 * age);
   bmr = (sex === 'm') ? bmr + 5 : bmr - 161;
 
@@ -753,10 +746,10 @@ function addEntry() {
   weightEntries.push(newEntry);
   weightEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  // Sauvegarder la liste des poids
   localStorage.setItem('fitplan_weights', JSON.stringify(weightEntries));
 
   renderTracker();
+  updateChart(); // Met à jour le graphique en temps réel
   document.getElementById('track-weight').value = '';
 }
 
@@ -764,9 +757,11 @@ function renderTracker() {
   const container = document.getElementById('tracker-entries');
   if (weightEntries.length === 0) {
     container.innerHTML = `<div class="empty-state">Aucune entrée pour l'instant. Commencez à enregistrer votre poids !</div>`;
+    document.getElementById('chart-wrap').style.display = 'none';
     return;
   }
 
+  document.getElementById('chart-wrap').style.display = 'block';
   let html = '';
   const initialWeight = weightEntries[0].weight;
 
@@ -805,6 +800,63 @@ function renderTracker() {
   });
 
   container.innerHTML = html;
+}
+
+// ─── FONCTION DE MISE À JOUR DU GRAPHIQUE ──────────────────
+function updateChart() {
+  if (weightEntries.length === 0) return;
+
+  const labels = weightEntries.map(entry => {
+    const options = { day: 'numeric', month: 'short' };
+    return new Date(entry.date).toLocaleDateString('fr-FR', options);
+  });
+  const dataWeights = weightEntries.map(entry => entry.weight);
+
+  // Si le graphique existe déjà, on le détruit pour le recréer proprement avec les nouvelles valeurs
+  if (myChart) {
+    myChart.destroy();
+  }
+
+  const ctx = document.getElementById('weightChart').getContext('2d');
+  myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Évolution de mon poids (kg)',
+        data: dataWeights,
+        borderColor: '#2d6a4f', // Vert principal du thème
+        backgroundColor: 'rgba(116, 198, 157, 0.2)', // Vert transparent sous la courbe
+        borderWidth: 3,
+        tension: 0.2, // Légère courbe adoucie
+        pointBackgroundColor: '#e76f51', // Points de pesée en orange pour ressortir
+        pointRadius: 5,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            font: { family: 'Plus Jakarta Sans', weight: 'bold' }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          grid: { color: '#e0dbd0' },
+          ticks: { font: { family: 'Plus Jakarta Sans' } }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: 'Plus Jakarta Sans' } }
+        }
+      }
+    }
+  });
 }
 
 // ─── SCROLL REVEAL ANIMATION ────────────────────────────
