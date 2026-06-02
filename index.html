@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPlan — Programme Perte de Poids 12 Semaines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f2ec;
+  --bg2:#ede9e0;
+  --surface:#fff;
+  --surface2:#faf8f4;
+  --green:#2d6a4f;
+  --green2:#40916c;
+  --green3:#74c69d;
+  --green-light:#d8f3dc;
+  --orange:#e76f51;
+  --orange2:#f4a261;
+  --text:#1a1a1a;
+  --text2:#5a5a5a;
+  --text3:#9a9a9a;
+  --border:#e0dbd0;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
+  --radius:16px;
+  --shadow:0 4px 24px rgba(0,0,0,0.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* HEADER */
+header{background:var(--green);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:var(--font-display);font-size:1.8rem;color:#fff;letter-spacing:2px}
+.logo span{color:var(--green3)}
+.header-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:.35rem 1rem;font-size:.75rem;color:#fff;font-weight:500}
+nav{display:flex;gap:.5rem}
+nav a{color:rgba(255,255,255,0.75);text-decoration:none;font-size:.82rem;font-weight:500;padding:.35rem .75rem;border-radius:8px;transition:all .2s}
+nav a:hover{background:rgba(255,255,255,0.15);color:#fff}
+
+/* HERO */
+.hero{background:var(--green);padding:5rem 2rem 7rem;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:80px;background:var(--bg);clip-path:ellipse(60% 100% at 50% 100%)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:.4rem 1.1rem;font-size:.75rem;color:var(--green3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp .6s ease both}
+.hero h1{font-family:var(--font-display);font-size:clamp(3.5rem,9vw,7rem);color:#fff;letter-spacing:4px;line-height:.95;margin-bottom:1.5rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{color:var(--green3);font-style:normal;display:block}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.75);max-width:520px;margin:0 auto 2.5rem;font-weight:300;line-height:1.7;animation:fadeUp .7s ease .2s both}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:3rem;animation:fadeUp .7s ease .3s both}
+.hero-stat-val{font-family:var(--font-display);font-size:2.5rem;color:#fff;letter-spacing:2px;line-height:1}
+.hero-stat-label{font-size:.72rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem}
+.hero-stat-sep{width:1px;height:3rem;background:rgba(255,255,255,0.2)}
+
+/* BMI CALCULATOR */
+.bmi-section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
+.section-header{display:flex;align-items:flex-end;gap:1rem;margin-bottom:2.5rem}
+.section-num{font-family:var(--font-display);font-size:5rem;color:var(--border);letter-spacing:-2px;line-height:1}
+.section-title{font-family:var(--font-display);font-size:2.2rem;color:var(--text);letter-spacing:1px;line-height:1;padding-bottom:.5rem}
+.section-title span{color:var(--green2)}
+
+.bmi-card{background:var(--surface);border-radius:var(--radius);padding:2.5rem;box-shadow:var(--shadow);border:1px solid var(--border)}
+.bmi-inputs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.input-group{display:flex;flex-direction:column;gap:.5rem}
+.input-label{font-size:.72rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.input-field{background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:.75rem 1rem;font-family:var(--font-body);font-size:.95rem;color:var(--text);outline:none;transition:border-color .2s;width:100%}
+.input-field:focus{border-color:var(--green2)}
+select.input-field{cursor:pointer}
+.btn-calc{grid-column:1/-1;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;padding:1rem;border-radius:12px;font-family:var(--font-display);font-size:1.1rem;letter-spacing:2px;cursor:pointer;transition:all .25s;box-shadow:0 4px 20px rgba(45,106,79,.3)}
+.btn-calc:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(45,106,79,.4)}
+.bmi-result{display:none;margin-top:1.5rem;padding:1.5rem;background:var(--bg);border-radius:12px;border-left:4px solid var(--green2)}
+.bmi-result.show{display:block;animation:fadeUp .4s ease both}
+.bmi-num{font-family:var(--font-display);font-size:3rem;color:var(--green);letter-spacing:-1px;line-height:1}
+.bmi-cat{font-weight:600;color:var(--text2);margin:.25rem 0}
+.bmi-advice{font-size:.85rem;color:var(--text2);font-weight:300;line-height:1.6}
+.bmi-bar-wrap{margin-top:1rem;height:8px;background:var(--border);border-radius:4px;position:relative;overflow:hidden}
+.bmi-bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+.calorie-result{margin-top:1rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem}
+.cal-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.cal-val{font-family:var(--font-display);font-size:1.6rem;color:var(--green);letter-spacing:-1px}
+.cal-label{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem}
+
+/* PROGRAMME */
+.programme-section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
+.weeks-nav{display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap}
+.week-btn{background:var(--surface);border:2px solid var(--border);border-radius:10px;padding:.5rem 1.1rem;font-family:var(--font-body);font-size:.8rem;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s}
+.week-btn.active{background:var(--green);border-color:var(--green);color:#fff}
+.week-btn:hover:not(.active){border-color:var(--green2);color:var(--green2)}
+
+.phase-badge{display:inline-flex;align-items:center;gap:.5rem;border-radius:20px;padding:.4rem 1rem;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.5rem}
+.phase-1{background:var(--green-light);color:var(--green)}
+.phase-2{background:#fff3e0;color:#e65100}
+.phase-3{background:#e8f4f8;color:#0277bd}
+
+.week-content{display:none}
+.week-content.active{display:block;animation:fadeUp .4s ease both}
+.week-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+.day-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.day-card-header{padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+.day-name{font-family:var(--font-display);font-size:1.1rem;letter-spacing:1px;color:#fff}
+.day-type{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;background:rgba(255,255,255,0.2);border-radius:4px;padding:.15rem .5rem;color:#fff}
+.day-cardio .day-card-header{background:linear-gradient(135deg,var(--green),var(--green2))}
+.day-muscu .day-card-header{background:linear-gradient(135deg,#e76f51,#f4a261)}
+.day-rest .day-card-header{background:linear-gradient(135deg,#6c757d,#adb5bd)}
+.day-hiit .day-card-header{background:linear-gradient(135deg,#9b2226,#ae2012)}
+.day-body{padding:1.25rem}
+.exercise-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.exercise-item{display:flex;align-items:flex-start;gap:.75rem;font-size:.82rem;color:var(--text2);font-weight:300}
+.exercise-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green2);flex-shrink:0;margin-top:.4rem}
+.exercise-item strong{color:var(--text);font-weight:500}
+.day-duration{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text3);margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+
+/* NUTRITION */
+.nutrition-section{background:var(--green);padding:5rem 2rem;position:relative;overflow:hidden}
+.nutrition-section::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.nutrition-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1}
+.nutrition-inner .section-num{color:rgba(255,255,255,0.15)}
+.nutrition-inner .section-title{color:#fff}
+.meals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.meal-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:1.5rem;transition:all .25s}
+.meal-card:hover{background:rgba(255,255,255,0.13);transform:translateY(-3px)}
+.meal-icon{font-size:2rem;margin-bottom:.75rem}
+.meal-time{font-size:.65rem;color:var(--green3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:.3rem}
+.meal-title{font-family:var(--font-display);font-size:1.1rem;color:#fff;letter-spacing:.5px;margin-bottom:.75rem}
+.meal-items{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.meal-items li{font-size:.78rem;color:rgba(255,255,255,0.7);font-weight:300;display:flex;align-items:center;gap:.5rem}
+.meal-items li::before{content:'•';color:var(--green3)}
+.meal-cals{display:inline-block;margin-top:.75rem;background:rgba(255,255,255,0.1);border-radius:6px;padding:.2rem .65rem;font-size:.68rem;color:var(--green3);font-weight:600}
+
+/* CONSEILS */
+.tips-section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
+.tips-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}
+.tip-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:all .3s;position:relative;overflow:hidden}
+.tip-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px}
+.tip-card:nth-child(1)::before{background:var(--green2)}
+.tip-card:nth-child(2)::before{background:var(--orange)}
+.tip-card:nth-child(3)::before{background:#4361ee}
+.tip-card:nth-child(4)::before{background:#7209b7}
+.tip-card:nth-child(5)::before{background:#f72585}
+.tip-card:nth-child(6)::before{background:#3a0ca3}
+.tip-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.tip-icon{font-size:1.8rem;margin-bottom:.75rem}
+.tip-title{font-family:var(--font-display);font-size:1rem;letter-spacing:.5px;color:var(--text);margin-bottom:.5rem}
+.tip-text{font-size:.8rem;color:var(--text2);font-weight:300;line-height:1.6}
+
+/* TRACKER */
+.tracker-section{padding:5rem 2rem;max-width:1000px;margin:0 auto}
+.tracker-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow)}
+.tracker-form{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:end;margin-bottom:2rem}
+.tracker-entries{display:flex;flex-direction:column;gap:.75rem}
+.entry-row{display:flex;align-items:center;gap:1rem;padding:1rem;background:var(--bg);border-radius:10px;animation:fadeUp .3s ease both}
+.entry-date{font-size:.75rem;color:var(--text3);font-weight:500;min-width:80px}
+.entry-weight{font-family:var(--font-display);font-size:1.4rem;color:var(--green);letter-spacing:-1px}
+.entry-diff{font-size:.75rem;font-weight:600;padding:.15rem .5rem;border-radius:4px}
+.entry-diff.neg{background:var(--green-light);color:var(--green)}
+.entry-diff.pos{background:#fde8e8;color:#c0392b}
+.entry-diff.zero{background:var(--border);color:var(--text3)}
+.entry-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.entry-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green3));border-radius:3px;transition:width .6s ease}
+.btn-add{background:var(--green);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:10px;font-family:var(--font-display);font-size:.95rem;letter-spacing:1px;cursor:pointer;transition:all .25s;white-space:nowrap}
+.btn-add:hover{background:var(--green2);transform:translateY(-1px)}
+.empty-state{text-align:center;padding:2rem;color:var(--text3);font-size:.85rem}
+
+/* FOOTER */
+footer{background:var(--text);padding:3rem 2rem;text-align:center}
+.footer-logo{font-family:var(--font-display);font-size:2rem;color:#fff;letter-spacing:3px;margin-bottom:.5rem}
+.footer-logo span{color:var(--green3)}
+.footer-sub{font-size:.8rem;color:rgba(255,255,255,0.4);font-weight:300}
+.footer-disclaimer{font-size:.7rem;color:rgba(255,255,255,0.3);max-width:500px;margin:.75rem auto 0;line-height:1.6}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* PROGRESS RING */
+.progress-rings{display:flex;justify-content:center;gap:3rem;margin:2rem 0}
+.ring-wrap{text-align:center}
+.ring-label{font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:.5rem}
+.ring-val{font-family:var(--font-display);font-size:.85rem;color:var(--text);letter-spacing:.5px}
+
+@media(max-width:768px){
+  .bmi-inputs{grid-template-columns:1fr 1fr}
+  .week-grid{grid-template-columns:1fr}
+  .meals-grid{grid-template-columns:1fr 1fr}
+  .tips-grid{grid-template-columns:1fr}
+  .tracker-form{grid-template-columns:1fr 1fr}
+  .tracker-form .btn-add{grid-column:1/-1}
+  .hero-stats{gap:1.5rem}
+  .calorie-result{grid-template-columns:1fr}
+  nav{display:none}
+}
+@media(max-width:480px){
+  .meals-grid{grid-template-columns:1fr}
+  .bmi-inputs{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">FIT<span>PLAN</span></div>
+  <nav>
+    <a href="#bmi">Mon IMC</a>
+    <a href="#programme">Programme</a>
+    <a href="#nutrition">Nutrition</a>
+    <a href="#tracker">Suivi</a>
+  </nav>
+  <div class="header-badge">Programme 12 semaines</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    Programme scientifiquement validé
+  </div>
+  <h1>PERDRE DU<br/><em>POIDS</em><br/>DURABLEMENT</h1>
+  <p class="hero-sub">Un programme complet de 12 semaines combinant exercice progressif, nutrition équilibrée et suivi personnalisé pour atteindre vos objectifs.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-val">12</div>
+      <div class="hero-stat-label">Semaines</div>
+    </div>
+    <div class="hero-stat-sep"></div>
+    <div>
+      <div class="hero-stat-val">84</div>
+      <div class="hero-stat-label">Séances</div>
+    </div>
+    <div class="hero-stat-sep"></div>
+    <div>
+      <div class="hero-stat-val">-8kg</div>
+      <div class="hero-stat-label">Objectif moyen</div>
+    </div>
+  </div>
+</section>
+
+<!-- BMI -->
+<section class="bmi-section reveal" id="bmi">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title">CALCULER MON <span>PROFIL</span></div>
+  </div>
+  <div class="bmi-card">
+    <div class="bmi-inputs">
+      <div class="input-group">
+        <label class="input-label">Poids actuel (kg)</label>
+        <input type="number" class="input-field" id="weight" placeholder="75" min="30" max="300">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Taille (cm)</label>
+        <input type="number" class="input-field" id="height" placeholder="175" min="100" max="250">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Âge</label>
+        <input type="number" class="input-field" id="age" placeholder="30" min="15" max="100">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Sexe</label>
+        <select class="input-field" id="sex">
+          <option value="m">Homme</option>
+          <option value="f">Femme</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Activité physique</label>
+        <select class="input-field" id="activity">
+          <option value="1.2">Sédentaire (bureau)</option>
+          <option value="1.375">Légèrement actif (1-3j/sem)</option>
+          <option value="1.55" selected>Modérément actif (3-5j/sem)</option>
+          <option value="1.725">Très actif (6-7j/sem)</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Objectif poids (kg)</label>
+        <input type="number" class="input-field" id="goal-weight" placeholder="67" min="30" max="300">
+      </div>
+      <div class="input-group" style="grid-column:1/-1">
+        <button class="btn-calc" onclick="calculateBMI()">CALCULER MON PROGRAMME PERSONNALISÉ</button>
+      </div>
+    </div>
+    <div class="bmi-result" id="bmi-result">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:2rem;align-items:start">
+        <div>
+          <div class="bmi-num" id="bmi-val">—</div>
+          <div class="bmi-cat" id="bmi-cat">—</div>
+          <div class="bmi-bar-wrap">
+            <div class="bmi-bar-fill" id="bmi-bar" style="width:0%;background:#74c69d"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--text3);margin-top:.3rem">
+            <span>Maigre</span><span>Normal</span><span>Surpoids</span><span>Obèse</span>
+          </div>
+        </div>
+        <div class="bmi-advice" id="bmi-advice"></div>
+      </div>
+      <div class="calorie-result" id="calorie-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME -->
+<section class="programme-section reveal" id="programme">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title">LE <span>PROGRAMME</span></div>
+  </div>
+
+  <div class="weeks-nav" id="weeks-nav"></div>
+  <div id="weeks-content"></div>
+</section>
+
+<!-- NUTRITION -->
+<section class="nutrition-section reveal" id="nutrition">
+  <div class="nutrition-inner">
+    <div class="section-header">
+      <div class="section-num" style="color:rgba(255,255,255,0.15)">03</div>
+      <div class="section-title" style="color:#fff">PLAN <span style="color:var(--green3)">NUTRITION</span></div>
+    </div>
+    <p style="color:rgba(255,255,255,0.65);font-size:.9rem;font-weight:300;max-width:580px;margin-bottom:.5rem">Exemple de journée alimentaire équilibrée pour un déficit calorique sain de 400-500 kcal/jour.</p>
+    <div class="meals-grid">
+      <div class="meal-card">
+        <div class="meal-icon">🌅</div>
+        <div class="meal-time">7h00 — Petit-déjeuner</div>
+        <div class="meal-title">ÉNERGIE DU MATIN</div>
+        <ul class="meal-items">
+          <li>Flocons d'avoine (60g) + lait</li>
+          <li>1 banane ou fruits rouges</li>
+          <li>2 œufs brouillés</li>
+          <li>Café ou thé sans sucre</li>
+        </ul>
+        <span class="meal-cals">~420 kcal</span>
+      </div>
+      <div class="meal-card">
+        <div class="meal-icon">🥗</div>
+        <div class="meal-time">12h30 — Déjeuner</div>
+        <div class="meal-title">PLEIN DE PROTÉINES</div>
+        <ul class="meal-items">
+          <li>150g poulet grillé ou poisson</li>
+          <li>Légumes verts à volonté</li>
+          <li>Riz complet (80g cru) ou patate douce</li>
+          <li>Filet d'huile d'olive</li>
+        </ul>
+        <span class="meal-cals">~550 kcal</span>
+      </div>
+      <div class="meal-card">
+        <div class="meal-icon">🍎</div>
+        <div class="meal-time">16h00 — Collation</div>
+        <div class="meal-title">SNACK MALIN</div>
+        <ul class="meal-items">
+          <li>1 pomme ou 1 poire</li>
+          <li>Poignée d'amandes (30g)</li>
+          <li>Yaourt grec nature (150g)</li>
+        </ul>
+        <span class="meal-cals">~250 kcal</span>
+      </div>
+      <div class="meal-card">
+        <div class="meal-icon">🌙</div>
+        <div class="meal-time">19h30 — Dîner</div>
+        <div class="meal-title">LÉGÈRETÉ DU SOIR</div>
+        <ul class="meal-items">
+          <li>Soupe de légumes maison</li>
+          <li>130g saumon ou œufs (3)</li>
+          <li>Salade verte + légumes vapeur</li>
+          <li>1 tranche pain complet</li>
+        </ul>
+        <span class="meal-cals">~480 kcal</span>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:1.25rem;display:flex;align-items:center;gap:1rem">
+      <span style="font-size:1.5rem">💧</span>
+      <div>
+        <div style="font-family:var(--font-display);color:#fff;letter-spacing:.5px;font-size:1rem">HYDRATATION : 2 À 3 LITRES D'EAU PAR JOUR</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,0.6);font-weight:300;margin-top:.2rem">L'eau est essentielle au métabolisme. Boire un grand verre avant chaque repas réduit l'appétit naturellement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSEILS -->
+<section class="tips-section reveal" id="conseils">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-title">CONSEILS <span>CLÉ</span></div>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">😴</div>
+      <div class="tip-title">DORMIR 7-8H PAR NUIT</div>
+      <div class="tip-text">Le manque de sommeil augmente le cortisol (hormone du stress) et stimule la ghréline (hormone de la faim). Dormir suffisamment est aussi important que l'alimentation.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🚫</div>
+      <div class="tip-title">ÉVITER LES PRODUITS ULTRA-TRANSFORMÉS</div>
+      <div class="tip-text">Chips, sodas, viennoiseries industrielles — ces aliments sont conçus pour être addictifs et contiennent peu de nutriments. Ils sabotent vos efforts sans vous rassasier.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🧠</div>
+      <div class="tip-title">MANGER LENTEMENT ET SANS ÉCRAN</div>
+      <div class="tip-text">La satiété met 20 minutes à apparaître. Manger lentement, en mâchant bien, permet de manger moins tout en étant plus rassasié. Posez votre fourchette entre chaque bouchée.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📅</div>
+      <div class="tip-title">PLANIFIER SES REPAS À L'AVANCE</div>
+      <div class="tip-text">Préparer ses repas le dimanche (meal prep) évite les décisions impulsives en semaine. Avoir des repas sains prêts à manger élimine la tentation du fast-food.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🚶</div>
+      <div class="tip-title">10 000 PAS PAR JOUR MINIMUM</div>
+      <div class="tip-text">La marche est sous-estimée. 10 000 pas représentent ~400 kcal brûlées sans effort perçu. Prendre les escaliers, descendre un arrêt plus tôt, ces habitudes s'accumulent.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📸</div>
+      <div class="tip-title">PRENDRE DES PHOTOS HEBDOMADAIRES</div>
+      <div class="tip-text">La balance peut stagner pendant que vous perdez de la graisse et gagnez du muscle. Les photos révèlent des transformations invisibles sur la balance. Photographiez-vous chaque dimanche matin.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACKER -->
+<section class="tracker-section reveal" id="tracker">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-title">SUIVI DU <span>POIDS</span></div>
+  </div>
+  <div class="tracker-card">
+    <div class="tracker-form">
+      <div class="input-group">
+        <label class="input-label">Date</label>
+        <input type="date" class="input-field" id="track-date">
+      </div>
+      <div class="input-group">
+        <label class="input-label">Poids (kg)</label>
+        <input type="number" class="input-field" id="track-weight" placeholder="75.5" step="0.1" min="30" max="300">
+      </div>
+      <button class="btn-add" onclick="addEntry()">+ AJOUTER</button>
+    </div>
+    <div id="tracker-entries">
+      <div class="empty-state">Aucune entrée pour l'instant. Commencez à enregistrer votre poids !</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">FIT<span>PLAN</span></div>
+  <div class="footer-sub">Programme perte de poids — 12 semaines</div>
+  <div class="footer-disclaimer">Ce programme est fourni à titre informatif uniquement. Consultez un médecin avant de commencer tout programme d'exercice ou de modifier votre alimentation, notamment si vous avez des conditions médicales particulières.</div>
+</footer>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────
+const programme = [
+  // Phase 1 : Fondation (sem 1-4)
+  { sem: 1, phase: 1, label: 'Phase 1 — Fondation', jours: [
+    { nom: 'LUNDI', type: 'cardio', exercices: ['Marche rapide 30 min', 'Étirements dynamiques 10 min', 'Gainage basique 3×30s'] },
+    { nom: 'MARDI', type: 'muscu', exercices: ['Squats 3×12', 'Pompes genoux 3×10', 'Rowing haltère 3×12', 'Fentes avant 3×10'] },
+    { nom: 'MERCREDI', type: 'rest', exercices: ['Repos actif', 'Marche légère 20 min', 'Étirements complets 15 min'] },
+    { nom: 'JEUDI', type: 'cardio', exercices: ['Vélo ou elliptique 35 min', 'Fréquence cardiaque 120-140 bpm', 'Récupération douce 5 min'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Hip thrust 3×12', 'Développé épaules 3×12', 'Curl biceps 3×12', 'Triceps corde 3×12'] },
+    { nom: 'SAMEDI', type: 'cardio', exercices: ['Natation ou marche nordique 40 min', 'Étirements 10 min'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Préparation repas semaine', 'Pesée hebdomadaire'] },
+  ]},
+  { sem: 2, phase: 1, label: 'Phase 1 — Fondation', jours: [
+    { nom: 'LUNDI', type: 'cardio', exercices: ['Marche rapide 35 min', 'Montées de genoux 3×20', 'Gainage latéral 3×20s'] },
+    { nom: 'MARDI', type: 'muscu', exercices: ['Squats goblet 3×12', 'Pompes 3×8', 'Tirage horizontal 3×12', 'Fentes latérales 3×10'] },
+    { nom: 'MERCREDI', type: 'rest', exercices: ['Yoga ou stretching 30 min', 'Marche 20 min'] },
+    { nom: 'JEUDI', type: 'hiit', exercices: ['Échauffement 5 min', 'HIIT débutant : 30s effort / 90s repos × 8', 'Récupération 5 min'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Romanian deadlift 3×12', 'Développé incliné 3×12', 'Rowing barre 3×10', 'Gainage 3×40s'] },
+    { nom: 'SAMEDI', type: 'cardio', exercices: ['Randonnée ou vélo 45 min', 'Fréquence cible 120-140 bpm'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos · Mobilité 15 min', 'Bilan semaine 2'] },
+  ]},
+  { sem: 3, phase: 1, label: 'Phase 1 — Fondation', jours: [
+    { nom: 'LUNDI', type: 'hiit', exercices: ['Échauffement 5 min', 'Jumping jacks 30s / repos 60s × 10', 'Étirements 5 min'] },
+    { nom: 'MARDI', type: 'muscu', exercices: ['Squats haltères 4×12', 'Pompes déclinées 3×10', 'Soulevé de terre 3×10', 'Press militaire 3×12'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course légère 30 min (9 km/h max)', 'Marche de retour au calme 10 min'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération active', 'Piscine douce 30 min ou yoga'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Hip thrust 4×12', 'Pull-over 3×12', 'Curl marteau 3×12', 'Dips chaise 3×10'] },
+    { nom: 'SAMEDI', type: 'cardio', exercices: ['Jogging 35 min ou vélo 50 min', 'Étirements 10 min'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos complet', 'Pesée · Photos de progression'] },
+  ]},
+  { sem: 4, phase: 1, label: 'Phase 1 — Fondation', jours: [
+    { nom: 'LUNDI', type: 'hiit', exercices: ['HIIT 20 min : burpees, squats sauts, mountain climbers', 'Récupération 10 min'] },
+    { nom: 'MARDI', type: 'muscu', exercices: ['Squat barre 4×10', 'Bench press 4×10', 'Tractions assistées 3×8', 'Développé épaules 3×12'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Jogging continu 40 min', 'Fréquence cible 130-150 bpm'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération — mobilité 20 min', 'Bain froid ou contraste douche'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Deadlift 4×8', 'Squat goblet 3×15', 'Rowing 4×10', 'Gainage complexe 4×45s'] },
+    { nom: 'SAMEDI', type: 'cardio', exercices: ['Sortie longue : marche-course 55 min', 'Bilan 1er mois'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS TOTAL', 'Pesée · Photos · Mesures corporelles'] },
+  ]},
+  // Phase 2 : Intensification (sem 5-8)
+  { sem: 5, phase: 2, label: 'Phase 2 — Intensification', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 4×10 — charge +5%', 'Bench press 4×10', 'Soulevé de terre 4×8', 'Gainage 4×1min'] },
+    { nom: 'MARDI', type: 'hiit', exercices: ['HIIT 25 min : 40s effort / 20s repos × 12', 'Sprint, burpees, mountain climbers'] },
+    { nom: 'MERCREDI', type: 'muscu', exercices: ['Fentes lestées 4×12', 'Tractions 3×max', 'Press militaire 4×10', 'Curl barre 3×12'] },
+    { nom: 'JEUDI', type: 'cardio', exercices: ['Jogging 45 min à allure modérée', 'Côtes × 6 sprints'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Hip thrust 4×15', 'Rowing barre 4×10', 'Dips lestés 3×8', 'Planche complexe 3×1min'] },
+    { nom: 'SAMEDI', type: 'hiit', exercices: ['Circuit training 30 min', '6 exercices × 45s / 15s repos × 3 tours'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS TOTAL', 'Pesée hebdomadaire'] },
+  ]},
+  { sem: 6, phase: 2, label: 'Phase 2 — Intensification', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 5×8', 'Incliné haltères 4×10', 'Rowing unilatéral 4×10', 'Face pull 3×15'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course 50 min en zone 2 (conversation possible)', 'Étirements profonds 10 min'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['Tabata 4 rounds : 20s max / 10s repos × 8', 'Exercices : squat saut, burpee, crunch bicycle, planche'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Deadlift 5×5', 'Press Arnold 4×10', 'Curl incliné 3×12', 'Extension triceps 3×12'] },
+    { nom: 'VENDREDI', type: 'cardio', exercices: ['Vélo intensif 45 min', 'Intervalles 2 min fort / 3 min modéré × 6'] },
+    { nom: 'SAMEDI', type: 'muscu', exercices: ['Full body circuit : 8 exercices × 15 reps × 3', 'Abs finisher 10 min'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Récupération · Pesée · Photos sem 6'] },
+  ]},
+  { sem: 7, phase: 2, label: 'Phase 2 — Intensification', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 4×6 lourd', 'Bench press 4×6 lourd', 'Tractions lestées 3×6', 'Core avancé 15 min'] },
+    { nom: 'MARDI', type: 'hiit', exercices: ['EMOM 20 min : 10 burpees + 15 squats / repos restant', 'Cool down 5 min'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Jogging 55 min zone 2', 'Mobilité hanche 10 min'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Deadlift 4×6', 'Hip thrust 4×12 lourd', 'Rowing 4×8', 'Gainage dynamique 3×1min'] },
+    { nom: 'VENDREDI', type: 'hiit', exercices: ['Sprint interval : 8 × (30s sprint / 90s marche)', 'Total 30 min avec échauffement'] },
+    { nom: 'SAMEDI', type: 'muscu', exercices: ['Hypertrophie : 4×12 tous groupes musculaires', 'Pompes, squats, fentes, rowing, dips'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS — bilan mi-programme'] },
+  ]},
+  { sem: 8, phase: 2, label: 'Phase 2 — Intensification', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Squat 5×5 PR attempt', 'Incliné 4×8', 'Soulevé de terre 4×5', 'Shoulder press 4×8'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course 60 min — objectif distance', 'Record personnel à battre'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['Circuit 35 min — niveau intermédiaire', '8 stations × 50s / 10s × 3 tours'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Récupération active — natation 30 min', 'Massage ou foam roller'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Full body force : 5×5 squat, bench, row', 'Core finisher avancé'] },
+    { nom: 'SAMEDI', type: 'hiit', exercices: ['Défi cardio 40 min : enchaînements HIIT', 'Photos et mesures bilan 2 mois'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['REPOS TOTAL', 'Pesée · Bilan 2 mois complet'] },
+  ]},
+  // Phase 3 : Affinage (sem 9-12)
+  { sem: 9, phase: 3, label: 'Phase 3 — Affinage', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Superset : Squat + fente 4×10+10', 'Superset : Bench + pompes 4×8+max', 'Core circuit 15 min'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Jogging 65 min zone 2', 'Strides finales : 4 × 100m'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['AMRAP 25 min : 10 burpees, 15 squat, 20 mountain climbers', 'Stretching 10 min'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Deadlift 5×5', 'Hip thrust 4×15', 'Superset tirage + rowing 4×10', 'Gainage complexe'] },
+    { nom: 'VENDREDI', type: 'cardio', exercices: ['Vélo ou elliptique 50 min', 'Intervalles progressifs'] },
+    { nom: 'SAMEDI', type: 'muscu', exercices: ['Full body avec supersets', '60 min — haute intensité'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Récupération · Pesée sem 9'] },
+  ]},
+  { sem: 10, phase: 3, label: 'Phase 3 — Affinage', jours: [
+    { nom: 'LUNDI', type: 'hiit', exercices: ['HIIT avancé 30 min', 'Circuits complexes sans repos longue durée'] },
+    { nom: 'MARDI', type: 'muscu', exercices: ['Squat 6×4 très lourd', 'Tractions lestées 4×6', 'Développé incliné 4×8', 'Core avancé 20 min'] },
+    { nom: 'MERCREDI', type: 'cardio', exercices: ['Course 70 min — rythme soutenu', 'Objectif : améliorer le temps sem 5'] },
+    { nom: 'JEUDI', type: 'rest', exercices: ['Mobilité complète 30 min', 'Yoga de récupération'] },
+    { nom: 'VENDREDI', type: 'muscu', exercices: ['Deadlift 5×3 max', 'Full body hypertr. 4×12', 'Supersets intenses'] },
+    { nom: 'SAMEDI', type: 'hiit', exercices: ['Circuit défi 45 min', 'Maximal effort — last push'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos · Pesée · Photos sem 10'] },
+  ]},
+  { sem: 11, phase: 3, label: 'Phase 3 — Affinage', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['Semaine de consolidation — charges modérées', 'Technique parfaite sur tous les exercices'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course longue détendue 60 min', 'Profitez de vos progrès !'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['HIIT modéré 25 min', 'Focus sur les sensations'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Full body équilibré 4×10', 'Tous groupes musculaires'] },
+    { nom: 'VENDREDI', type: 'cardio', exercices: ['Activité au choix 45 min', 'Sport que vous aimez'] },
+    { nom: 'SAMEDI', type: 'rest', exercices: ['Repos actif', 'Préparation semaine finale'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['Repos · Pesée · Photos sem 11'] },
+  ]},
+  { sem: 12, phase: 3, label: 'Phase 3 — Affinage', jours: [
+    { nom: 'LUNDI', type: 'muscu', exercices: ['SEMAINE FINALE — Record personnel squat', 'Record personnel bench press', 'Célébrez vos progrès !'] },
+    { nom: 'MARDI', type: 'cardio', exercices: ['Course test 5 km — chronométrez !', 'Comparez avec la semaine 1'] },
+    { nom: 'MERCREDI', type: 'hiit', exercices: ['Dernier HIIT du programme', 'Circuit final 30 min'] },
+    { nom: 'JEUDI', type: 'muscu', exercices: ['Record personnel deadlift', 'Full body finisher', 'VOUS AVEZ TERMINÉ 🎉'] },
+    { nom: 'VENDREDI', type: 'rest', exercices: ['Récupération active', 'Réflexion sur les 12 semaines'] },
+    { nom: 'SAMEDI', type: 'rest', exercices: ['Activité plaisir — sport au choix', 'Partagez vos résultats !'] },
+    { nom: 'DIMANCHE', type: 'rest', exercices: ['BILAN FINAL', 'Pesée · Photos · Mesures · Célébration 🏆'] },
+  ]},
+];
+
+const typeColors = { cardio:'day-cardio', muscu:'day-muscu', rest:'day-rest', hiit:'day-hiit' };
+const typeLabels = { cardio:'CARDIO', muscu:'MUSCULATION', rest:'REPOS', hiit:'HIIT' };
+const durationMap = { cardio:'40-60 min', muscu:'50-70 min', rest:'—', hiit:'30-40 min' };
+const phaseLabels = ['','Phase 1 — Fondation','Phase 2 — Intensification','Phase 3 — Affinage'];
+const phaseClasses = ['','phase-1','phase-2','phase-3'];
+
+// Build programme HTML
+function buildProgramme() {
+  const nav = document.getElementById('weeks-nav');
+  const content = document.getElementById('weeks-content');
+  programme.forEach((week, i) => {
+    // nav button
+    const btn = document.createElement('button');
+    btn.className = 'week-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = `Sem ${week.sem}`;
+    btn.onclick = () => showWeek(i);
+    nav.appendChild(btn);
+    // content
+    const div = document.createElement('div');
+    div.className = 'week-content' + (i === 0 ? ' active' : '');
+    div.id = `week-${i}`;
+    div.innerHTML = `
+      <span class="phase-badge ${phaseClasses[week.phase]}">${phaseLabels[week.phase]}</span>
+      <div class="week-grid">
+        ${week.jours.map(j => `
+          <div class="day-card ${typeColors[j.type]}">
+            <div class="day-card-header">
+              <span class="day-name">${j.nom}</span>
+              <span class="day-type">${typeLabels[j.type]}</span>
+            </div>
+            <div class="day-body">
+              <ul class="exercise-list">
+                ${j.exercices.map(e => `<li class="exercise-item">${e}</li>`).join('')}
+              </ul>
+              <div class="day-duration">⏱ ${durationMap[j.type]}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+    content.appendChild(div);
+  });
+}
+
+function showWeek(i) {
+  document.querySelectorAll('.week-btn').forEach((b, j) => b.classList.toggle('active', j === i));
+  document.querySelectorAll('.week-content').forEach((c, j) => c.classList.toggle('active', j === i));
+}
+
+// BMI Calculator
+function calculateBMI() {
+  const w = parseFloat(document.getElementById('weight').value);
+  const h = parseFloat(document.getElementById('height').value) / 100;
+  const a = parseInt(document.getElementById('age').value);
+  const s = document.getElementById('sex').value;
+  const act = parseFloat(document.getElementById('activity').value);
+  const gw = parseFloat(document.getElementById('goal-weight').value);
+
+  if (!w || !h || !a) { alert('Remplissez tous les champs !'); return; }
+
+  const bmi = (w / (h * h)).toFixed(1);
+  let cat, color, barWidth, advice;
+  if (bmi < 18.5) { cat = 'Insuffisance pondérale'; color = '#74b9ff'; barWidth = 15; }
+  else if (bmi < 25) { cat = 'Poids normal ✓'; color = '#00b894'; barWidth = 40; }
+  else if (bmi < 30) { cat = 'Surpoids'; color = '#fdcb6e'; barWidth = 65; }
+  else { cat = 'Obésité'; color = '#e17055'; barWidth = 88; }
+
+  // BMR (Mifflin-St Jeor)
+  let bmr = s === 'm'
+    ? 10 * w + 6.25 * (h * 100) - 5 * a + 5
+    : 10 * w + 6.25 * (h * 100) - 5 * a - 161;
+  const tdee = Math.round(bmr * act);
+  const deficit = Math.round(tdee - 450);
+  const agressif = Math.round(tdee - 700);
+
+  const kgToLose = gw ? (w - gw).toFixed(1) : '?';
+  const weeks = gw ? Math.ceil((w - gw) * 7700 / (450 * 7)) : '?';
+
+  advice = `<strong>Votre poids actuel :</strong> ${w} kg · IMC ${bmi}<br>
+    ${gw ? `<strong>Objectif :</strong> ${gw} kg (${kgToLose > 0 ? '-' + kgToLose : '+' + Math.abs(kgToLose)} kg) · Durée estimée : <strong>${weeks} semaines</strong>` : ''}
+    <br><br>Votre métabolisme de base est de <strong>${Math.round(bmr)} kcal/jour</strong> et vos dépenses totales de <strong>${tdee} kcal/jour</strong>.`;
+
+  document.getElementById('bmi-val').textContent = bmi;
+  document.getElementById('bmi-cat').textContent = cat;
+  document.getElementById('bmi-bar').style.width = barWidth + '%';
+  document.getElementById('bmi-bar').style.background = color;
+  document.getElementById('bmi-advice').innerHTML = advice;
+  document.getElementById('calorie-result').innerHTML = `
+    <div class="cal-box"><div class="cal-val">${tdee}</div><div class="cal-label">Maintien kcal/j</div></div>
+    <div class="cal-box"><div class="cal-val" style="color:var(--green)">${deficit}</div><div class="cal-label">Perte douce (-450)</div></div>
+    <div class="cal-box"><div class="cal-val" style="color:var(--orange)">${agressif}</div><div class="cal-label">Perte accélérée (-700)</div></div>`;
+  document.getElementById('bmi-result').classList.add('show');
+}
+
+// Weight Tracker
+let entries = JSON.parse(localStorage.getItem('fitplan_weights') || '[]');
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('track-date').value = today;
+
+function addEntry() {
+  const date = document.getElementById('track-date').value;
+  const weight = parseFloat(document.getElementById('track-weight').value);
+  if (!date || !weight) return;
+  entries.unshift({ date, weight });
+  entries = entries.slice(0, 20); // max 20
+  localStorage.setItem('fitplan_weights', JSON.stringify(entries));
+  renderEntries();
+  document.getElementById('track-weight').value = '';
+}
+
+function renderEntries() {
+  const container = document.getElementById('tracker-entries');
+  if (!entries.length) {
+    container.innerHTML = '<div class="empty-state">Aucune entrée pour l\'instant. Commencez à enregistrer votre poids !</div>';
+    return;
+  }
+  const maxW = Math.max(...entries.map(e => e.weight));
+  container.innerHTML = entries.map((e, i) => {
+    const prev = entries[i + 1];
+    let diffHtml = '';
+    if (prev) {
+      const diff = (e.weight - prev.weight).toFixed(1);
+      const cls = diff < 0 ? 'neg' : diff > 0 ? 'pos' : 'zero';
+      const sign = diff > 0 ? '+' : '';
+      diffHtml = `<span class="entry-diff ${cls}">${sign}${diff} kg</span>`;
+    }
+    const barW = Math.round((e.weight / maxW) * 100);
+    return `<div class="entry-row">
+      <span class="entry-date">${new Date(e.date).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})}</span>
+      <span class="entry-weight">${e.weight} kg</span>
+      ${diffHtml}
+      <div class="entry-bar"><div class="entry-bar-fill" style="width:${barW}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// Reveal on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Init
+buildProgramme();
+renderEntries();
+</script>
+</body>
+</html>
